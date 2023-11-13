@@ -9,8 +9,7 @@ from selenium.webdriver.firefox.service import Service
 from webdriver_manager.firefox import GeckoDriverManager
 import streamlit as st
 
-
-st.set_page_config(page_title='Amazon Webscrapper', 
+st.set_page_config(page_title='Amazon Webscraper', 
                    page_icon='✂️', 
                    layout="centered")
 
@@ -22,7 +21,24 @@ def aceptar_cookies():
         print("Cookies aceptadas.")
     except NoSuchElementException:
         print("No hay cookies")
-            
+def buscadores(busqueda):
+    try:
+        buscador = driver.find_element(By.XPATH, '//*[@id="twotabsearchtextbox"]')
+        buscador.send_keys(busqueda)
+        time.sleep(3)
+        buscador.send_keys(Keys.ENTER)
+    except NoSuchElementException:
+        print('No hay buscador numero 1, probando buscador 2:')
+        try:
+            buscador = driver.find_element(By.XPATH, '//*[@id="nav-bb-search"]')
+            buscador.send_keys(busqueda)
+            time.sleep(3)
+            buscador.send_keys(Keys.ENTER)
+            time.sleep(3)
+            aceptar_cookies()
+        except NoSuchElementException:
+            print('No hay buscadores')   
+
 st.title("Web Scraping de Amazon")
 
 st.sidebar.subheader("Filtro de Precio")
@@ -43,28 +59,12 @@ if st.button("Buscar"):
     driver.get(url)
 
     aceptar_cookies()
+    buscadores(busqueda)
     time.sleep(3)
-    try:
-        buscador = driver.find_element(By.XPATH, '//*[@id="twotabsearchtextbox"]')
-        buscador.send_keys(busqueda)
-        time.sleep(3)
-        buscador.send_keys(Keys.ENTER)
-    except NoSuchElementException:
-        print('No hay buscador numero 1 ')
 
-    try:
-        buscador = driver.find_element(By.XPATH, '//*[@id="nav-bb-search"]')
-        buscador.send_keys(busqueda)
-        time.sleep(3)
-        buscador.send_keys(Keys.ENTER)
-        time.sleep(3)
-        aceptar_cookies()
-    except NoSuchElementException:
-        print('No hay buscador numero 2')
-
-    time.sleep(3)
     soup1 = bs(driver.page_source,"lxml")
     productos = soup1.select('div.s-result-item')
+    print(productos)
     resultados = []
 
     for producto in productos:
@@ -92,9 +92,8 @@ if st.button("Buscar"):
         if precio_min <= precio <= precio_max and producto_info['titulo']:
             producto_info['precio'] = producto_info['precio'].replace('\xa0', ' ')
             resultados.append(producto_info)
+        print('Resultados obtenidos, total: ',len(resultados))
 
-
-    time.sleep(5)
     driver.quit()
 
     for i, resultado in enumerate(resultados, start=1):
