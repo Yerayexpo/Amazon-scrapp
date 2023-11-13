@@ -62,6 +62,7 @@ if st.button("Buscar"):
     except NoSuchElementException:
         print('No hay buscador numero 2')
 
+    time.sleep(2)
     soup1 = bs(driver.page_source,"lxml")
     productos = soup1.select('div.s-result-item')
     resultados = []
@@ -93,7 +94,7 @@ if st.button("Buscar"):
             resultados.append(producto_info)
 
 
-
+    time.sleep(2)
     driver.quit()
 
     for i, resultado in enumerate(resultados, start=1):
