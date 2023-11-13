@@ -64,7 +64,6 @@ if st.button("Buscar"):
 
     soup1 = bs(driver.page_source,"lxml")
     productos = soup1.select('div.s-result-item')
-    print(productos)
     resultados = []
 
     for producto in productos:
