@@ -1,12 +1,19 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
-import requests
-import pandas as pd
 import time
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import FirefoxOptions
 import streamlit as st
+import os, sys
+
+@st.experimental_singleton
+def installff():
+  os.system('sbase install geckodriver')
+  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
+
+_ = installff()
 
 def aceptar_cookies():
     try:
@@ -16,17 +23,15 @@ def aceptar_cookies():
         print("Cookies aceptadas.")
     except NoSuchElementException:
         print("No hay cookies")
-              
+            
 headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0", "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"} 
-options = webdriver.ChromeOptions()
-options.add_argument("start-maximized")
-options.add_argument(f"user-agent={headers}")
-options.add_argument("--headless")
+opts = FirefoxOptions()
+opts.add_argument("--headless")
+opts.add_argument(f"user-agent={headers}")
 
 st.set_page_config(page_title='Amazon Webscrapper', 
                    page_icon='✂️', 
-                   layout="centered"
-)
+                   layout="centered")
 
 st.title("Web Scraping de Amazon")
 
@@ -36,7 +41,7 @@ busqueda = st.text_input("Introduce lo que quieres buscar:", "Ositos de peluche"
 
 if st.button("Buscar"):
 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Firefox(options=opts)
     url = "https://www.amazon.es/"
     driver.get(url)
     aceptar_cookies()
