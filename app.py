@@ -43,7 +43,7 @@ st.title("Web Scraping de Amazon")
 
 st.sidebar.subheader("Filtro de Precio")
 precio_min, precio_max = st.sidebar.slider("Selecciona rango de precio", 0, 500, (0, 500))
-busqueda = st.text_input("Introduce lo que quieres buscar:", "Ositos de peluche")
+busqueda = st.text_input("Introduce lo que quieres buscar (Espere 15 segundos):", "Ositos de peluche")
 
 if st.button("Buscar"):
     # st.write('Obteniendo datos, espere 15 segundos:')
