@@ -43,11 +43,11 @@ if st.button("Buscar"):
     driver.get(url)
 
     aceptar_cookies()
-
+    time.sleep(3)
     try:
         buscador = driver.find_element(By.XPATH, '//*[@id="twotabsearchtextbox"]')
         buscador.send_keys(busqueda)
-        time.sleep(1)
+        time.sleep(3)
         buscador.send_keys(Keys.ENTER)
     except NoSuchElementException:
         print('No hay buscador numero 1 ')
@@ -55,14 +55,14 @@ if st.button("Buscar"):
     try:
         buscador = driver.find_element(By.XPATH, '//*[@id="nav-bb-search"]')
         buscador.send_keys(busqueda)
-        time.sleep(1)
+        time.sleep(3)
         buscador.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(3)
         aceptar_cookies()
     except NoSuchElementException:
         print('No hay buscador numero 2')
 
-    time.sleep(2)
+    time.sleep(3)
     soup1 = bs(driver.page_source,"lxml")
     productos = soup1.select('div.s-result-item')
     resultados = []
@@ -94,7 +94,7 @@ if st.button("Buscar"):
             resultados.append(producto_info)
 
 
-    time.sleep(2)
+    time.sleep(5)
     driver.quit()
 
     for i, resultado in enumerate(resultados, start=1):
