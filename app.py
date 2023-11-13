@@ -8,6 +8,9 @@ from selenium.webdriver import FirefoxOptions
 import streamlit as st
 import os, sys
 
+st.set_page_config(page_title='Amazon Webscrapper', 
+                   page_icon='✂️', 
+                   layout="centered")
 @st.experimental_singleton
 def installff():
   os.system('sbase install geckodriver')
@@ -29,9 +32,7 @@ opts = FirefoxOptions()
 opts.add_argument("--headless")
 opts.add_argument(f"user-agent={headers}")
 
-st.set_page_config(page_title='Amazon Webscrapper', 
-                   page_icon='✂️', 
-                   layout="centered")
+
 
 st.title("Web Scraping de Amazon")
 
